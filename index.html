@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>自習室マップ</title>
+    <meta name="description" content="自習室の地図です">
+    <link href="style.css" rel="stylesheet">
+    <!-- Leafret -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+    <!-- Semantic-UI  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <div id="header">
+        <div id="header-title"><h2>自習室マップ</h2></div>
+        <div id="print-button"><button class="circular ui compact icon green button"><i class="print icon"></i></button></div>
+    </div>
+    <!-- 地図 -->
+    <div id="map-area">
+        <div id="sidebar" class="ui bottom attached segment pushable">
+            <div id="button-area" class="ui grey visible inverted left vertical sidebar menu">
+                <a class="item"><i class="home icon"></i>自習室一覧</a>
+                <a class="item"><i class="edit icon"></i>自習室レビュー投稿</a>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
