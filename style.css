@@ -27,13 +27,8 @@ body {
     display: flex;
 }
 #map {
-    width: 85%;
-    /* width: 100%; */
+    width: 100%;
     height: 100%;
-}
-/* サイドバー */
-#sidebar{
-    width: 15%;
 }
 #button-area{
     width: 100%;

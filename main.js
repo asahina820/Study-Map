@@ -13,17 +13,26 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 ).addTo(map);
 
 // 地物表示
-var geojsonFeature = {
-  "type": "Feature",
-  "properties": {
-      "name": "親子プラス仙台",
-      "popupContent": "親子プラス仙台"
-  },
-  "geometry": {
-      "type": "Point",
-      "coordinates": [140.866252, 38.260599]
-  }
-};
+var libraryIcon = L.icon({
+  iconUrl: './img/book.png',
+  iconSize: [40, 40],
+  iconAnchor: [25, 50],
+  popupAnchor: [0, -50],
+});
 
-var icon = L.geoJSON(geojsonFeature).addTo(map);
-icon.bindPopup("親子プラス仙台");
+let point;
+$.getJSON("geojson/sendai_library.geojson",function(data) {
+  point = L.geoJson(data,
+    {
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {icon: libraryIcon})
+      },
+      onEachFeature: function(feature,layer){
+        let name = feature.properties.名称;
+        // TODO: 各施設の詳細ページに飛ばす。今は仮のページになっている
+        let link = './detail.html'
+        layer.bindPopup(name + '<br>' + '<a href = ' + link + '>詳細</a>');
+      }
+    }
+  ).addTo(map);
+});
