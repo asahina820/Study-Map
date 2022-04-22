@@ -1,4 +1,4 @@
-body {
+body,#app {
     width: 100%;
     height: 100%;
     margin: 0px;
@@ -21,17 +21,8 @@ body {
 }
 /* /ヘッダー */
 /* コンテンツ */
-/* 地図 */
-#map-area {
+#content-area {
     height: 95%;
-    display: flex;
 }
-#map {
-    width: 100%;
-    height: 100%;
-}
-#button-area{
-    width: 100%;
-    height: 100%;
-}
+
 /* /コンテンツ */
