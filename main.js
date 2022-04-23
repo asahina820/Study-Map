@@ -1,7 +1,8 @@
 const router = new VueRouter({
   routes: [
-      { path: '/list', component: httpVueLoader('./list.vue') },
-      { path: '/', component: httpVueLoader('./map.vue') },
+    { path: '/', component: httpVueLoader('./map.vue') },
+    { path: '/list', component: httpVueLoader('./list.vue') },
+    { path: '/detail', component: httpVueLoader('./detail.vue') },
   ]
 })
 const app = new Vue({

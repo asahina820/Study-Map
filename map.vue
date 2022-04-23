@@ -28,19 +28,24 @@ module.exports = {
 
     let point;
     $.getJSON("geojson/sendai_library.geojson",function(data) {
-    point = L.geoJson(data,
-        {
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {icon: libraryIcon})
-        },
-        onEachFeature: function(feature,layer){
-            let name = feature.properties.名称;
-            // TODO: 各施設の詳細ページに飛ばす。今は仮のページになっている
-            let link = './detail.html'
-            layer.bindPopup(name + '<br>' + '<a href = ' + link + '>詳細</a>');
-        }
-        }
-    ).addTo(map);
+        point = L.geoJson(data,
+            {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {icon: libraryIcon})
+                },
+                onEachFeature: function(feature,layer){
+                    // Leafletのpopupからrouter-linkを表示することができない
+                    // そのため、Vueオブジェクトを作ってpopupに渡す
+                    let name = feature.properties.名称;
+                    let PopupCont = Vue.extend({
+                        router,
+                        template: `<router-link to="/detail" title="詳細">` + name + `</router-link>`
+                    })
+                    let popup = new PopupCont()
+                    layer.bindPopup(popup.$mount().$el)
+                }
+            }
+        ).addTo(map);
     });
   }
 }

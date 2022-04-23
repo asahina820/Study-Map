@@ -20,8 +20,12 @@
 <body>
     <div id="app">
         <div id="header">
-            <div id="header-title"><h2>Sログ - 学生の学び場マップ -</h2></div>
-            <div id="print-button">
+            <div id="header-title">
+                <router-link tag="a" to="/">
+                    <div id="header-title"><h2>Sログ - 学生の学び場マップ -</h2></div>
+                </router-link>
+            </div>
+            <div id="list-button">
                 <router-link tag="button" class="circular ui compact icon green button" to="/list" title="自習室一覧">
                     <i class="th icon"></i>
                 </router-link>
