@@ -54,19 +54,11 @@ module.exports = {
   },
   methods: {
       aaa: async function() {
-        db = document.firebase.db;  // FIXME
-        collection = document.firebase.collection;  // FIXME
-        doc = document.firebase.doc;  // FIXME
-        getDoc = document.firebase.getDoc;  // FIXME
-        setDoc = document.firebase.setDoc;  // FIXME
-        addDoc = document.firebase.addDoc;  // FIXME
+        const db = this.$parent.$options.db;
         const comment = document.querySelector('form.ui input').value;
         const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
-        // const thelibrary = collection(db, 'feature')
-        const the_feature = doc(db, 'feature', documentId);
-        const reviews = collection(the_feature, 'reviews');
-        debugger
-        await addDoc(reviews, {
+        const reviews = db.collection('feature').doc(documentId).collection('reviews');
+        const docRef = await reviews.add({
             comment: comment,
             user_id: 'TBD'
         });
