@@ -20,20 +20,30 @@
                 <a class="ui label">人気</a>
             </div>
         </div>
-
-        <div>
-            <span v-for="comment in comments" :key="comment">{{comment}}<br/></span>
-        </div>
         
         <div class="extra content">
-            <p>口コミ</p>
+            <p>口コミ一覧</p>
+            <div v-for="review in reviews" :key="review" class="ui tag labels">
+                <div class="ui relaxed divided list">
+                    <div class="item">
+                        <i class="large user middle aligned icon"></i>
+                        <div class="content">
+                            <p class="header">{{ review.user_id }}</p>
+                            <div class="description">{{ review.comment }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="extra content">
+            <p>口コミ投稿</p>
             <form class="ui form">
                 <div class="field">
                     <input type="text" required>
                 </div>
             </form>
-                <button class="ui button" type="submit"  @click="aaa">Submit</button>
-        </div>
+            <button class="ui button" type="submit"  @click="aaa">Submit</button>
+       </div>
     </div>
 </template>
 
@@ -43,14 +53,17 @@ module.exports = {
     return {
       name: '宮城県図書館',
       description: ' 伊達家ゆかりの資料である伊達文庫などの古書を含む、約115万点の資料を収蔵している。',
-      comments: [
-          '静かです',
-          '子どもが走り回っていました',
-          'リファレンスが優しかった'
-      ],
+      reviews: [],
     }
   },
-  mounted: function() {
+  mounted: async function() {
+      const db = this.$parent.$options.db;
+      const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
+
+      const snap = await db.collection('feature').doc(documentId).collection('reviews').get();
+      snap.forEach(doc => {
+          this.reviews.push(doc.data())
+      });
   },
   methods: {
       aaa: async function() {
@@ -60,7 +73,7 @@ module.exports = {
         const reviews = db.collection('feature').doc(documentId).collection('reviews');
         const docRef = await reviews.add({
             comment: comment,
-            user_id: 'TBD'
+            user_id: 'testuser'
         });
         return false;  // TODO: リダイレクトさせる
     }
