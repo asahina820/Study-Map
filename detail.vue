@@ -57,7 +57,7 @@ module.exports = {
     }
   },
   mounted: async function() {
-      const db = this.$parent.$options.db;
+      const db = firebase.firestore();
       const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
 
       const snap = await db.collection('feature').doc(documentId).collection('reviews').get();
@@ -67,13 +67,13 @@ module.exports = {
   },
   methods: {
       aaa: async function() {
-        const db = this.$parent.$options.db;
+        const db = firebase.firestore();
         const comment = document.querySelector('form.ui input').value;
         const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
         const reviews = db.collection('feature').doc(documentId).collection('reviews');
         const docRef = await reviews.add({
             comment: comment,
-            user_id: 'testuser'
+            user_id: this.$parent.user?.uid || "anonymous"
         });
         return false;  // TODO: リダイレクトさせる
     }
