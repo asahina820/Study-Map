@@ -23,7 +23,7 @@
         
         <div class="extra content">
             <p>口コミ一覧</p>
-            <div v-for="review in reviews" :key="review" class="ui tag labels">
+            <div v-for="review in reviews" :key="review.comment" class="ui tag labels">
                 <div class="ui relaxed divided list">
                     <div class="item">
                         <i class="large user middle aligned icon"></i>
@@ -58,18 +58,15 @@ module.exports = {
   },
   mounted: async function() {
       const db = firebase.firestore();
-      const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
-
+      const documentId = this.$route.params.id;
       const snap = await db.collection('feature').doc(documentId).collection('reviews').get();
-      snap.forEach(doc => {
-          this.reviews.push(doc.data())
-      });
+      this.reviews = snap.docs.map(doc => doc.data());
   },
   methods: {
       aaa: async function() {
         const db = firebase.firestore();
         const comment = document.querySelector('form.ui input').value;
-        const documentId = 'gHWHGxflto2fijt4Ftgs';  // FIXME: いま開いている地物のdocumentIDをもらってくること
+        const documentId = this.$route.params.id;
         const reviews = db.collection('feature').doc(documentId).collection('reviews');
         const docRef = await reviews.add({
             comment: comment,
