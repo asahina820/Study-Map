@@ -11,7 +11,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', component: httpVueLoader('./map.vue') },
     { path: '/list', component: httpVueLoader('./list.vue') },
-    { path: '/detail', component: httpVueLoader('./detail.vue') },
+    { path: '/detail/:id', component: httpVueLoader('./detail.vue') },
     { path: '/login', component: httpVueLoader('./login.vue') },
   ]
 })
