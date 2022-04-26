@@ -1,14 +1,14 @@
 <template>
     <div class="ui centered card" style="width:50%; margin-top:50px;">
         <div class="image">
-            <img src="https://www2.wagmap.jp/sendaicity-html/pict/ext_shimin.jpg">
+            <img v-bind:src="imgSrc">
         </div>
         <div class="content">
-            <a href = "http://www.library.pref.miyagi.jp/" class="header">宮城県図書館</a>
+            <a href = "http://www.library.pref.miyagi.jp/" class="header">{{ name }}</a>
             <div class="meta">
-                <span class="category">{{ name }}</span>
+                <span class="category">図書館</span><!-- レイヤ追加時に直す -->
             </div>
-            <div class="description">{{ description }}</div>
+            <div class="description"><span v-html="description"></span></div>
         </div>
         <div class="extra content">
             <p>タグ</p>
@@ -51,16 +51,25 @@
 module.exports = {
   data: function() {
     return {
-      name: '宮城県図書館',
-      description: ' 伊達家ゆかりの資料である伊達文庫などの古書を含む、約115万点の資料を収蔵している。',
+      name: '',
+      description: '',
+      imgSrc: '',
       reviews: [],
     }
   },
   mounted: async function() {
       const db = firebase.firestore();
       const documentId = this.$route.params.id;
-      const snap = await db.collection('feature').doc(documentId).collection('reviews').get();
-      this.reviews = snap.docs.map(doc => doc.data());
+      const docRef = db.collection('feature').doc(documentId);
+      // 地物情報（GeoJSON形式）を取り出しJSON形式に変換する
+      const geoJsonFromDoc = await docRef.get();
+      const geoJson = JSON.parse(geoJsonFromDoc.get('geojson'));
+      this.name = geoJson["properties"]["名称"];
+      this.description = geoJson["properties"]["コメント"];
+      this.imgSrc = geoJson["properties"]["写真"];
+      // コメントを取り出す
+      const reviewsFromDoc = await docRef.collection('reviews').get();
+      this.reviews = reviewsFromDoc.docs.map(doc => doc.data());
   },
   methods: {
       aaa: async function() {
