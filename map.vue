@@ -64,6 +64,32 @@ module.exports = {
     }) || [];
     geojson.features.push(...features_json);
 
+    // retrieve features from firestore
+    // with geojson string
+    geojson.features.push(...features.docs
+    .filter(doc => doc.data().geojson)
+    .map(doc => {
+        const geojson = JSON.parse(doc.data().geojson);
+        geojson.id = doc.id;
+        return geojson;
+    }));
+    // with properties
+    geojson.features.push(...features.docs
+    .filter(doc => !doc.data().geojson)
+    .map(doc => {
+        geojson.id = doc.id;
+        const data = doc.data();
+        return {
+            id: doc.id,
+            type:"Feature",
+            properties:{
+                "名称": data.name,
+                type: data.type,
+            },
+            geometry : { type :"Point", "coordinates": [data.geometry.longitude, data.geometry.latitude] }
+        };
+    }));
+    
     L.geoJson(geojson,
         {
             pointToLayer: function (feature, latlng) {
