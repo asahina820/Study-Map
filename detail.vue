@@ -81,7 +81,7 @@ module.exports = {
             comment: comment,
             user_id: this.$parent.user?.uid || "anonymous"
         });
-        return false;  // TODO: リダイレクトさせる
+        location.reload();  // TODO: 画面をリロードしているが、画面の一部だけ更新したい
     }
   }
 }

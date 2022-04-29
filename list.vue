@@ -1,50 +1,14 @@
 <template>
   <div class="ui four cards" style="width:80%; margin-top:50px; margin-left: auto; margin-right: auto;">
-    <div class="card">
+    <div v-for="featureItem in featureItems" :key="featureItem.documentId" class="card">
       <div class="image">
-        <img src="https://www2.wagmap.jp/sendaicity-html/pict/ext_shimin.jpg">
+        <img v-bind:src="featureItem.imgSrc">
       </div>
       <div class="content">
-        <p class="header">{{ title }}</p>
+        <router-link tag="a" v-bind:to="'/detail/'+featureItem.documentId" title="詳細" class="header">{{ featureItem.name }}</router-link>
       </div>
       <div class="extra">
-        Rating:
-        <div class="ui star rating" data-rating="4"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="image">
-        <img src="https://www2.wagmap.jp/sendaicity-html/pict/ext_shimin.jpg">
-      </div>
-      <div class="content">
-        <p class="header">{{ title }}</p>
-      </div>
-      <div class="extra">
-        Rating:
-        <div class="ui star rating" data-rating="4"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="image">
-        <img src="https://www2.wagmap.jp/sendaicity-html/pict/ext_shimin.jpg">
-      </div>
-      <div class="content">
-        <p class="header">{{ title }}</p>
-      </div>
-      <div class="extra">
-        Rating:
-        <div class="ui star rating" data-rating="4"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="image">
-        <img src="https://www2.wagmap.jp/sendaicity-html/pict/ext_shimin.jpg">
-      </div>
-      <div class="content">
-        <p class="header">{{ title }}</p>
-      </div>
-      <div class="extra">
-        Rating:
+        図書館
         <div class="ui star rating" data-rating="4"></div>
       </div>
     </div>
@@ -55,8 +19,21 @@
 module.exports = {
   data: function() {
     return {
-      title: '宮城県図書館'
+      featureItems: [],
     }
+  },
+  mounted: async function() {
+    const db = firebase.firestore();
+    const itemListFromDoc = await db.collection('feature').get();
+    // 地物情報（GeoJSON形式）とドキュメントIDを全て取り出す
+    this.featureItems = itemListFromDoc.docs.map(doc => {
+      const geoJson = JSON.parse(doc.data().geojson);
+      return {
+        documentId: doc.id,
+        name: geoJson["properties"]["名称"],
+        imgSrc: geoJson["properties"]["写真"]
+      }
+    });
   }
 }
 </script>
