@@ -17,7 +17,7 @@ module.exports = {
                 firebase.auth.TwitterAuthProvider.PROVIDER_ID,
                 firebase.auth.GithubAuthProvider.PROVIDER_ID
             ],
-            signInSuccessUrl: 'http://localhost:5555/#/',   // FIXME
+            signInSuccessUrl: window.location.origin,
             // Other config options...
         });
         // // https://firebase.google.com/docs/auth/web/google-signin?hl=ja
