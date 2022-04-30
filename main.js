@@ -21,6 +21,7 @@ const router = new VueRouter({
     { path: '/list', component: httpVueLoader('./list.vue') },
     { path: '/detail/:id', component: httpVueLoader('./detail.vue') },
     { path: '/login', component: httpVueLoader('./login.vue') },
+    { path: '/crud', component: httpVueLoader('./crud.vue') },  // hidden page
   ]
 })
 
