@@ -6,12 +6,23 @@
 <script>
 module.exports = {
   async mounted() {
-    let lat = 38.26889; // 緯度
-    let lng = 140.87194; // 経度
-    let zoom = 16; // ズームレベル
     // 背景地図表示
     let map = L.map("map");
-    map.setView([lat, lng], zoom);
+
+    map.setView([
+            Number(sessionStorage.currentLat ||  38.26889),  // 緯度
+            Number(sessionStorage.currentLng || 140.87194), // 経度
+        ],
+        Number(sessionStorage.currentZoom || 16),  // ズームレベル
+    );
+
+    map.on('move', function(e){
+        currentPosi = map.getCenter();
+        currentZoom = map.getZoom();
+        sessionStorage.setItem('currentLat',currentPosi.lat);
+        sessionStorage.setItem('currentLng',currentPosi.lng);
+        sessionStorage.setItem('currentZoom',currentZoom);
+    });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
