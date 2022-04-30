@@ -7,12 +7,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="feature in features" :key="feature.id" @id="feature.id" :class="{ edited: feature.darty }">
-                <td><input class="id" :value="feature.id" disabled></td>
+            <tr v-for="(feature,index) in features" :key="index" :class="{ edited: feature.darty }">
                 <td v-for="column in Object.keys(columns)">
-                    <input @change="darty(feature.id)" v-model="feature[column]" :size="columns[column]">
+                    <input @change="darty(index)" v-model="feature[column]" :size="columns[column]">
                 </td>
-                <td @id="feature.id"><button @click="save(feature.id)">save</button></td>
+                <td @id="feature.id"><button @click="save(index)">save</button></td>
             </tr>
         </tbody>
     </table>
@@ -22,7 +21,7 @@
 module.exports = {
     data: function () {
         return {
-            columns: { 'lng': 12, 'lat': 12, 'type': 12, 'name': 15, 'description': 20, 'imgSrc': 20 },
+            columns: { id: 10, 'lng': 12, 'lat': 12, 'type': 12, 'name': 15, 'description': 20, 'imgSrc': 20 },
             features: [],
         }
     },
@@ -32,20 +31,7 @@ module.exports = {
         this.features = features_ref.docs
             .map(feature_ref => {
                 data = feature_ref.data();
-                debugger
-                if (data.geojson) {
-                    const geojson = JSON.parse(feature_ref.data().geojson);
-                    return {
-                        id: feature_ref.id,
-                        darty: false,
-                        lng: geojson.geometry.coordinates[0],
-                        lat: geojson.geometry.coordinates[1],
-                        type: geojson.properties.type,
-                        name: geojson.properties.名称,
-                        description: geojson.properties.コメント,
-                        imgSrc: geojson.properties.写真
-                    }
-                } else {
+                if (data.geometry) {
                     return {
                         id: feature_ref.id,
                         darty: false,
@@ -56,19 +42,28 @@ module.exports = {
                         description: data.description,
                         imgSrc: data.imgSrc
                     }
+                } else {
+                    return {
+                        id: feature_ref.id,
+                        darty: false,
+                        lng: 0,
+                        lat: 0,
+                        type: "library",
+                        name: "name",
+                        description: "description",
+                    }
                 }
             });
     },
     methods: {
-        darty: function (id) {
-            console.log(id);
-            this.features.find(feature => feature.id == id).darty = true;
+        darty: function (index) {
+            this.features[index].darty = true;
         },
-        save: async function (documentId) {
-            feature = this.features.find(feature => feature.id == documentId);
+        save: async function (index) {
+            feature = this.features[index];
             const db = firebase.firestore();
             if (feature.darty) {
-                await db.collection('feature').doc(documentId).set({
+                await db.collection('feature').doc(feature.id).set({
                     geometry: new firebase.firestore.GeoPoint(Number(feature.lat), Number(feature.lng)),
                     type: feature.type || "",
                     name: feature.name || "",
@@ -77,12 +72,6 @@ module.exports = {
                 }, { merge: true });
             }
             feature.darty = false;
-
-            // const docRef = await reviews.add({
-            //     comment: comment,
-            //     user_id: this.$parent.user?.uid || "anonymous"
-            // });
-            // return false;  // TODO: リダイレクトさせる
         }
     }
 }
