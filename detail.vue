@@ -61,12 +61,10 @@ module.exports = {
       const db = firebase.firestore();
       const documentId = this.$route.params.id;
       const docRef = db.collection('feature').doc(documentId);
-      // 地物情報（GeoJSON形式）を取り出しJSON形式に変換する
-      const geoJsonFromDoc = await docRef.get();
-      const geoJson = JSON.parse(geoJsonFromDoc.get('geojson'));
-      this.name = geoJson["properties"]["名称"];
-      this.description = geoJson["properties"]["コメント"];
-      this.imgSrc = geoJson["properties"]["写真"];
+      const data = (await docRef.get()).data();
+      this.name = data.name;
+      this.description = data.description;
+      this.imgSrc = data.imgSrc;
       // コメントを取り出す
       const reviewsFromDoc = await docRef.collection('reviews').get();
       this.reviews = reviewsFromDoc.docs.map(doc => doc.data());
@@ -77,11 +75,14 @@ module.exports = {
         const comment = document.querySelector('form.ui input').value;
         const documentId = this.$route.params.id;
         const reviews = db.collection('feature').doc(documentId).collection('reviews');
-        const docRef = await reviews.add({
+        review = {
             comment: comment,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             user_id: this.$parent.user?.uid || "anonymous"
-        });
-        location.reload();  // TODO: 画面をリロードしているが、画面の一部だけ更新したい
+        };
+        await reviews.add(review);
+        this.reviews.push(review);
+        document.querySelector('form.ui input').value = '';
     }
   }
 }

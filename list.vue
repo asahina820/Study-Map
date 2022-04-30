@@ -27,11 +27,11 @@ module.exports = {
     const itemListFromDoc = await db.collection('feature').get();
     // 地物情報（GeoJSON形式）とドキュメントIDを全て取り出す
     this.featureItems = itemListFromDoc.docs.map(doc => {
-      const geoJson = JSON.parse(doc.data().geojson);
+      const data = doc.data();
       return {
         documentId: doc.id,
-        name: geoJson["properties"]["名称"],
-        imgSrc: geoJson["properties"]["写真"]
+        name: data.name,
+        imgSrc: data.imgSrc,
       }
     });
   }

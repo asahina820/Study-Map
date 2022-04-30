@@ -35,9 +35,24 @@ module.exports = {
     const db = firebase.firestore();
     const features = await db.collection('feature').get();
     geojson.features.push(...features.docs.map(doc => {
-        const geojson = JSON.parse(doc.data().geojson);
-        geojson.id = doc.id;
-        return geojson;
+        const data = doc.data();
+        return data.geometry
+        ? {  // from geopoint
+            id: doc.id,
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    data.geometry.longitude,
+                    data.geometry.latitude,
+                ],
+            },
+            "properties": {
+                name: data.name,
+                imgSrc: data.imgSrc,
+            },
+        }
+        : Object.assign({id: doc.id}, JSON.parse(data.geojson || "{}"));  // from geojson
     }));
 
     // retrieve features from spreadsheet
@@ -64,32 +79,6 @@ module.exports = {
     }) || [];
     geojson.features.push(...features_json);
 
-    // retrieve features from firestore
-    // with geojson string
-    geojson.features.push(...features.docs
-    .filter(doc => doc.data().geojson)
-    .map(doc => {
-        const geojson = JSON.parse(doc.data().geojson);
-        geojson.id = doc.id;
-        return geojson;
-    }));
-    // with properties
-    geojson.features.push(...features.docs
-    .filter(doc => !doc.data().geojson)
-    .map(doc => {
-        geojson.id = doc.id;
-        const data = doc.data();
-        return {
-            id: doc.id,
-            type:"Feature",
-            properties:{
-                "名称": data.name,
-                type: data.type,
-            },
-            geometry : { type :"Point", "coordinates": [data.geometry.longitude, data.geometry.latitude] }
-        };
-    }));
-    
     L.geoJson(geojson,
         {
             pointToLayer: function (feature, latlng) {
@@ -98,7 +87,7 @@ module.exports = {
             onEachFeature: function(feature,layer){
                 // Leafletのpopupからrouter-linkを表示することができない
                 // そのため、Vueオブジェクトを作ってpopupに渡す
-                let name = feature.properties.名称;
+                let name = feature.properties.name;
                 let PopupCont = Vue.extend({
                     router,
                     template: `<router-link to="/detail/${feature.id}" title="詳細">${name}</router-link>`
