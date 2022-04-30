@@ -17,7 +17,7 @@ module.exports = {
                 firebase.auth.TwitterAuthProvider.PROVIDER_ID,
                 firebase.auth.GithubAuthProvider.PROVIDER_ID
             ],
-            signInSuccessUrl: window.location.origin,
+            signInSuccessUrl: window.location.origin + window.location.pathname,
             // Other config options...
         });
         // // https://firebase.google.com/docs/auth/web/google-signin?hl=ja
