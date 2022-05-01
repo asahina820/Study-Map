@@ -1,14 +1,19 @@
 <template>
     <div id="login">
         <div id="firebaseui-auth-container"></div>
-        <div id="profile" v-if="!this.$parent?.user?.isCentinel">
+        <div id="profile" v-if="user != null">
             <div class="ui list">
                 <div class="item">
-                    <img class="content" :src="this.$parent?.user?.photoURL" style="width:200px" />
+                    <img class="content" :src="user.photoURL" style="width:200px" />
                 </div>
-                <div class="item">
-                    <div class="content">{{ this.$parent?.user?.displayName || "void" }}
-                    </div>
+                <div class="item">Display Name: 
+                    <div class="content">{{ user.displayName || "void" }} </div>
+                </div>
+                <div class="item">email: 
+                    <div class="content">{{ user.email || "void" }} </div>
+                </div>
+                <div class="item">emailVerified: 
+                    <div class="content">{{ user.emailVerified || "void" }} </div>
                 </div>
             </div>
             <button @click="signout">sign out</button>
@@ -20,19 +25,27 @@
 module.exports = {
     data: function () {
         return {
-            user: this.$parent?.user
+            user: undefined,
         }
     },
-    async mounted() {
-        if (this.$parent?.user?.isCentinel) {
-            this.signin();
-        }
+    mounted() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User logged in");
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                this.user = user;
+            } else {
+                console.log("User logged out");
+                this.user = null;
+            }
+        });
     },
-    methods: {
-        signin() {
+    updated() {
+        if (!this.user) {
             // sign in
             // https://firebase.google.com/docs/auth/web/firebaseui?hl=ja#oauth_providers_google_facebook_twitter_and_github
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
             ui.start('#firebaseui-auth-container', {
                 signInOptions: [
                     // List of OAuth providers supported.
@@ -45,9 +58,12 @@ module.exports = {
                 signInSuccessUrl: window.location.origin + window.location.pathname,
                 // Other config options...
             });
-        },
-        signout() {
-            firebase.auth().signOut().then(this.signin);
+        };
+    },
+    methods: {
+        async signout() {
+            await firebase.auth().signOut();
+            this.user = null;
         }
     }
 }
