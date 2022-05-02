@@ -78,7 +78,7 @@ module.exports = {
         review = {
             comment: comment,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            user_id: this.$parent.user?.uid || "anonymous"
+            user_id: this.$parent.user?.displayName || "anonymous"
         };
         await reviews.add(review);
         this.reviews.push(review);
