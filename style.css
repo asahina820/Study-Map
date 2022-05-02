@@ -7,22 +7,31 @@ body,#app {
 }
 /* ヘッダー */
 #header {
-    height: 5%;
-    background-color: #55c500;
+    height: 7%;
+    background-color: #D70087;
     display: flex;
     align-items: center;
 }
+/* タイトル */
 #header-title{
-    color: #fff;
-    padding-left: 10px;
+    padding-left: 50px;
 }
+#title{
+    color: #fff;
+    font-family: 'M PLUS 1p', sans-serif;
+    letter-spacing: 3px;
+}
+/* ボタン */
 #list-button{
     margin-left: auto;
+    padding-right: 30px;
+}
+.list-title{
+    font-family: 'M PLUS 1p', sans-serif;
 }
 /* /ヘッダー */
 /* コンテンツ */
 #content-area {
-    height: 95%;
+    height: 93%;
 }
-
 /* /コンテンツ */

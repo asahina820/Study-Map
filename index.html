@@ -19,6 +19,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     <!-- Google API -->
     <script src="https://apis.google.com/js/api.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@300&display=swap" rel="stylesheet">
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -31,18 +35,18 @@
         <div id="header">
             <div id="header-title">
                 <router-link tag="a" to="/">
-                    <div id="header-title"><h2>Sログ - 学生の学び場マップ -</h2></div>
+                    <h1 id="title">Sログ</h1>
                 </router-link>
             </div>
             <div id="list-button">
-                <router-link v-if="user" tag="button" class="circular ui compact icon green button" to="/login" title="ログアウト">
-                    {{user.displayName}}
+                <router-link tag="button" class="ui pink button" to="/list">
+                    <i class="th icon"></i><span class="list-title">自習室一覧</span>
                 </router-link>
-                <router-link v-if="!user" tag="button" class="circular ui compact icon green button" to="/login" title="ログイン">
-                    login
+                <router-link v-if="user" tag="button" class="ui pink button" to="/login">
+                    <i class="user icon"></i><span class="list-title">{{user.displayName}}</span>
                 </router-link>
-                <router-link tag="button" class="circular ui compact icon green button" to="/list" title="自習室一覧">
-                    <i class="th icon"></i>
+                <router-link v-if="!user" tag="button" class="ui pink button" to="/login">
+                    <i class="sign-in icon"></i><span class="list-title">ログイン</span>
                 </router-link>
             </div>
         </div>
