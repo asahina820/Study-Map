@@ -25,13 +25,21 @@ const router = new VueRouter({
   ]
 })
 
+const anonymous = {
+  displayName: "Anonymous",
+  email: "anonymous@example.com",
+  photoURL: "https://via.placeholder.com/300/030/777.png",
+  emailVerified: false,
+  isAnonymous: true,
+  isCentinel: true,
+}
+
 const app = new Vue({
   el: "#app",
   router,
   data: function() { 
     return {
-      user: null,
-      firebase,
+      user: anonymous,
     }
   },
   mounted: function() {
@@ -42,11 +50,8 @@ const app = new Vue({
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         this.user = user;
-        // document.querySelector("#username").innerText = user.uid;
-        // ...
       } else {
-        // User is signed out
-        // ...
+        this.user = anonymous
       }
     });
     gapi.load('client', async () => {

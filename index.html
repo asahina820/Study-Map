@@ -36,7 +36,7 @@
             </div>
             <div id="list-button">
                 <router-link v-if="user" tag="button" class="circular ui compact icon green button" to="/login" title="ログアウト">
-                    {{user.uid}}
+                    {{user.displayName}}
                 </router-link>
                 <router-link v-if="!user" tag="button" class="circular ui compact icon green button" to="/login" title="ログイン">
                     login
