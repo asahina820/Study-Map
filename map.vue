@@ -67,28 +67,33 @@ module.exports = {
     }));
 
     // retrieve features from spreadsheet
-    await new Promise(resolve => setTimeout(resolve, 500));
-    while(!gapi.client.sheets) {
-        console.debug("waiting for that gapi.client.sheets api be available...")
-        await new Promise(resolve => setTimeout(resolve, 50));
+    if (false) try {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        while(!gapi.client.sheets) {
+            console.debug("waiting for that gapi.client.sheets api be available...")
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        const response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1JWUkyuRUprYrODsa1Fr70VOIxleLNy5g3Xs-g7NymmI',
+            range: 'amenity:library'
+        });
+        var features_json = response.result?.values?.slice(2)?.map(feature => {
+            const [id, lat, lng, type, name, description, imgSrc] = feature;
+            return {
+                type: "Feature",
+                id,
+                properties: { "名称": name, type, name, description, imgSrc },
+                geometry: {
+                    type: "Point", 
+                    coordinates: [ lat, lng ]
+                }
+            };
+        }) || [];
+        geojson.features.push(...features_json);
+    } catch (error) {
+        // do nothing...
     }
-    const response = await gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1JWUkyuRUprYrODsa1Fr70VOIxleLNy5g3Xs-g7NymmI',
-        range: 'amenity:library'
-    });
-    var features_json = response.result?.values?.slice(2)?.map(feature => {
-        const [id, lat, lng, type, name, description, imgSrc] = feature;
-        return {
-            type: "Feature",
-            id,
-            properties: { "名称": name, type, name, description, imgSrc },
-            geometry: {
-                type: "Point", 
-                coordinates: [ lat, lng ]
-            }
-        };
-    }) || [];
-    geojson.features.push(...features_json);
 
     L.geoJson(geojson,
         {
