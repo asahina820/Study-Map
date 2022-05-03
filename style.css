@@ -5,6 +5,10 @@ body,#app {
     padding: 0px;
     -webkit-print-color-adjust: exact;
 }
+/* Intro.jsでスクロールバーが表示されるとハイライトがずれるため、スクロールバーを非表示にする */
+body::-webkit-scrollbar{
+    display: none;
+  }
 /* ヘッダー */
 #header {
     height: 7%;
