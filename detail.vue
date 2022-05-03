@@ -6,7 +6,8 @@
         <div class="content">
             <a href = "http://www.library.pref.miyagi.jp/" class="header">{{ name }}</a>
             <div class="meta">
-                <span class="category">図書館</span><!-- レイヤ追加時に直す -->
+                <span class="category" v-if="type == 'library'">図書館</span>
+                <span class="category" v-else>カフェ</span>
             </div>
             <div class="description"><span v-html="description"></span></div>
         </div>
@@ -54,6 +55,7 @@ module.exports = {
       name: '',
       description: '',
       imgSrc: '',
+      type: '',
       reviews: [],
     }
   },
@@ -65,6 +67,7 @@ module.exports = {
       this.name = data.name;
       this.description = data.description;
       this.imgSrc = data.imgSrc;
+      this.type = data.type;
       // コメントを取り出す
       const reviewsFromDoc = await docRef.collection('reviews').get();
       this.reviews = reviewsFromDoc.docs.map(doc => doc.data());
