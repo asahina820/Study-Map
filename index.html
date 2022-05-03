@@ -29,6 +29,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <!-- Intro.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/intro.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.1.0/introjs.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div id="app">
@@ -39,15 +42,18 @@
                 </router-link>
             </div>
             <div id="list-button">
-                <router-link tag="button" class="ui pink button" to="/list">
-                    <i class="th icon"></i><span class="list-title">自習室一覧</span>
+                <router-link tag="button" class="ui pink button" to="/list" id="list-btn">
+                    <i class="th icon"></i><span class="list-title">自習スペース一覧</span>
                 </router-link>
-                <router-link v-if="user" tag="button" class="ui pink button" to="/login">
+                <router-link v-if="user" tag="button" class="ui pink button" to="/login" id="login-btn">
                     <i class="user icon"></i><span class="list-title">{{user.displayName}}</span>
                 </router-link>
                 <router-link v-if="!user" tag="button" class="ui pink button" to="/login">
                     <i class="sign-in icon"></i><span class="list-title">ログイン</span>
                 </router-link>
+                <button class="ui pink button" @click="startTutorial" >
+                    <i class="info circle icon"></i><span class="list-title">チュートリアル</span>
+                </button>
             </div>
         </div>
         <div id="content-area">
