@@ -29,14 +29,19 @@ module.exports = {
         attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }
     ).addTo(map);
-    // 地物表示
+    // アイコン設定
     var libraryIcon = L.icon({
-    iconUrl: './img/book.png',
-    iconSize: [40, 40],
-    iconAnchor: [25, 50],
-    popupAnchor: [0, -50],
+        iconUrl: './img/book.png',
+        iconSize: [40, 40],
+        iconAnchor: [25, 50],
+        popupAnchor: [0, -50],
     });
-
+    var cafeIcon = L.icon({
+        iconUrl: './img/cafe.png',
+        iconSize: [40, 40],
+        iconAnchor: [25, 50],
+        popupAnchor: [0, -50],
+    });
     const geojson = {
         "type": "FeatureCollection",
         "name": "sendai_library",
@@ -61,6 +66,7 @@ module.exports = {
             "properties": {
                 name: data.name,
                 imgSrc: data.imgSrc,
+                type: data.type,
             },
         }
         : Object.assign({id: doc.id}, JSON.parse(data.geojson || "{}"));  // from geojson
@@ -98,7 +104,15 @@ module.exports = {
     L.geoJson(geojson,
         {
             pointToLayer: function (feature, latlng) {
-                return L.marker(latlng, {icon: libraryIcon})
+                // typeが図書館の場合は図書館のアイコンを表示する
+                if(feature.properties.type == 'library'){
+                    return L.marker(latlng, {icon: libraryIcon})
+                }
+                // 図書館以外の場合はカフェのアイコンを表示する
+                // TODO: 公民館が増えた場合は判定を追加する
+                else{
+                    return L.marker(latlng, {icon: cafeIcon})
+                }
             },
             onEachFeature: function(feature,layer){
                 // Leafletのpopupからrouter-linkを表示することができない

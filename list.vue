@@ -1,5 +1,5 @@
 <template>
-  <div class="ui four cards" style="width:80%; margin-top:50px; margin-left: auto; margin-right: auto;">
+  <div class="ui four cards" id="list-card">
     <div v-for="featureItem in featureItems" :key="featureItem.documentId" class="card">
       <div class="image">
         <img v-bind:src="featureItem.imgSrc">
@@ -8,8 +8,8 @@
         <router-link tag="a" v-bind:to="'/detail/'+featureItem.documentId" title="詳細" class="header">{{ featureItem.name }}</router-link>
       </div>
       <div class="extra">
-        図書館
-        <div class="ui star rating" data-rating="4"></div>
+        <span class="category" v-if="featureItem.type == 'library'">図書館</span>
+        <span class="category" v-else>カフェ</span>
       </div>
     </div>
   </div>
@@ -32,6 +32,7 @@ module.exports = {
         documentId: doc.id,
         name: data.name,
         imgSrc: data.imgSrc,
+        type: data.type
       }
     });
   }
