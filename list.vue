@@ -1,5 +1,5 @@
 <template>
-  <div class="ui four cards" style="width:80%; margin-top:50px; margin-left: auto; margin-right: auto;">
+  <div class="ui four cards" id="list-card">
     <div v-for="featureItem in featureItems" :key="featureItem.documentId" class="card">
       <div class="image">
         <img v-bind:src="featureItem.imgSrc">

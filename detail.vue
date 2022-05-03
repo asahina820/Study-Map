@@ -1,50 +1,52 @@
 <template>
-    <div class="ui centered card" style="width:50%; margin-top:50px;">
-        <div class="image">
+    <div id="detail-cards">
+        <div class="ui centered card" id="info-card">
             <img v-bind:src="imgSrc">
-        </div>
-        <div class="content">
-            <a href = "http://www.library.pref.miyagi.jp/" class="header">{{ name }}</a>
-            <div class="meta">
-                <span class="category" v-if="type == 'library'">図書館</span>
-                <span class="category" v-else>カフェ</span>
-            </div>
-            <div class="description"><span v-html="description"></span></div>
-        </div>
-        <div class="extra content">
-            <p>タグ</p>
-            <div class="ui tag labels">
-                <a class="ui label">静かめ</a>
-                <a class="ui label">無料</a>
-                <a class="ui label">休日は混んでる</a>
-                <a class="ui label">大学生が多い</a>
-                <a class="ui label">人気</a>
+            <div class="content">
+                <p class="header">{{ name }}</p>
+                <div class="meta">
+                    <span class="category" v-if="type == 'library'">図書館</span>
+                    <span class="category" v-else>カフェ</span>
+                    <div class="description"><span v-html="description"></span></div>
+                </div>
             </div>
         </div>
-        
-        <div class="extra content">
-            <p>口コミ一覧</p>
-            <div v-for="review in reviews" :key="review.comment" class="ui tag labels">
-                <div class="ui relaxed divided list">
-                    <div class="item">
-                        <i class="large user middle aligned icon"></i>
-                        <div class="content">
-                            <p class="header">{{ review.user_id }}</p>
-                            <div class="description">{{ review.comment }}</div>
+        <div class="ui centered card" id="info-card">
+            <div class="extra content" id="tag-area">
+                <p>タグ</p>
+                <div class="ui tag labels">
+                    <a class="ui label">静かめ</a>
+                    <a class="ui label">無料</a>
+                    <a class="ui label">休日は混んでる</a>
+                    <a class="ui label">大学生が多い</a>
+                    <a class="ui label">人気</a>
+                </div>
+            </div>        
+            <div class="extra content" id="review-list-area">
+                <p>口コミ一覧</p>
+                <p class="description" v-if="reviews.length == 0">口コミはまだありません。</p>
+                <div v-for="review in reviews" :key="review.comment" class="ui tag labels">
+                    <div class="ui relaxed divided list">
+                        <div class="item">
+                            <i class="large user middle aligned icon"></i>
+                            <div class="content">
+                                <p class="header">{{ review.user_id }}</p>
+                                <div class="description">{{ review.comment }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="extra content" id="review-post-area">
+                <p>口コミ投稿</p>
+                <form class="ui form">
+                    <div class="field">
+                        <input type="text" required>
+                    </div>
+                </form>
+                <button class="ui button" type="submit"  @click="aaa">Submit</button>
+            </div>
         </div>
-       <div class="extra content">
-            <p>口コミ投稿</p>
-            <form class="ui form">
-                <div class="field">
-                    <input type="text" required>
-                </div>
-            </form>
-            <button class="ui button" type="submit"  @click="aaa">Submit</button>
-       </div>
     </div>
 </template>
 

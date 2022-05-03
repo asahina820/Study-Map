@@ -38,4 +38,35 @@ body::-webkit-scrollbar{
 #content-area {
     height: 93%;
 }
+/* 自習スペース一覧 */
+#list-card{
+    width:80%; 
+    margin-top:50px; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+/* 自習スペース詳細 */
+#detail-cards{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+#info-card{
+    width: 40%;
+    height: 90%;
+    margin-top:50px;
+    margin-right: 0;
+    margin-left: 0;
+}
+#tag-area{
+    height: 15%;
+}
+#review-list-area{
+    height: 65%;
+    overflow-y: auto;
+}
+#review-post-area{
+    height: 20%
+}
 /* /コンテンツ */
