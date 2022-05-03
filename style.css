@@ -12,7 +12,7 @@ body::-webkit-scrollbar{
 /* ヘッダー */
 #header {
     height: 7%;
-    background-color: #D70087;
+    background-color: #DF5286;
     display: flex;
     align-items: center;
 }
