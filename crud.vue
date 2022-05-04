@@ -1,20 +1,22 @@
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th>id</th>
-                <th v-for="column in Object.keys(columns)"> {{ column }} </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(feature,index) in features" :key="index" :class="{ edited: feature.darty }">
-                <td v-for="column in Object.keys(columns)">
-                    <input @change="darty(index)" v-model="feature[column]" :size="columns[column]">
-                </td>
-                <td @id="feature.id"><button @click="save(index)">save</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <input type=file @change="upload">
+        <table>
+            <thead>
+                <tr>
+                    <th v-for="column in Object.keys(columns)"> {{ column }} </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(feature, index) in features" :key="index" :class="{ edited: feature.darty }">
+                    <td v-for="column in Object.keys(columns)">
+                        <input @change="darty(index)" v-model="feature[column]" :size="columns[column]">
+                    </td>
+                    <td @id="feature.id"><button @click="save(index)">save</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -60,18 +62,43 @@ module.exports = {
             this.features[index].darty = true;
         },
         save: async function (index) {
+            debugger
             feature = this.features[index];
             const db = firebase.firestore();
-            if (feature.darty) {
-                await db.collection('feature').doc(feature.id).set({
-                    geometry: new firebase.firestore.GeoPoint(Number(feature.lat), Number(feature.lng)),
-                    type: feature.type || "",
-                    name: feature.name || "",
-                    description: feature.description || "",
-                    imgSrc: feature.imgSrc || "",
-                }, { merge: true });
-            }
+            // if (feature.darty) {
+            await db.collection('feature').doc(feature.id).set({
+                geometry: new firebase.firestore.GeoPoint(Number(feature.lat), Number(feature.lng)),
+                type: feature.type || "",
+                name: feature.name || "",
+                description: feature.description || "",
+                imgSrc: feature.imgSrc || "",
+                geohash: geohash.encode(Number(feature.lat), Number(feature.lng)),
+            }, { merge: true });
+            // }
             feature.darty = false;
+        },
+        upload: async function(event) {
+            const file = event.srcElement.files[0];
+            const content = await file.text();
+            const featurecollection = JSON.parse(content);
+            console.log(featurecollection);
+            // console.dir(geojson.features);
+            const features = featurecollection.features
+            .map(geojson => {
+                return {
+                        id: geojson.properties.name + (geojson.properties.branch || ""),
+                        darty: true,
+                        lng: geojson.geometry.coordinates[0],
+                        lat: geojson.geometry.coordinates[1],
+                        type: geojson.properties.type,
+                        name: geojson.properties.name,
+                        description: geojson.properties.コメント,
+                        imgSrc: geojson.properties.写真
+                    }
+            })
+            .filter(features => features.lng >= 140.7 && features.lng <= 141 && features.lat >= 38.15 && features.lat <= 38.39);
+            this.features.push(...features);
+            debugger;
         }
     }
 }
