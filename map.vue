@@ -16,13 +16,13 @@ module.exports = {
         Number(sessionStorage.currentZoom || 16),  // ズームレベル
     );
 
-    map.on('move', function(e){
+    map.on('move', _.debounce(function(e){
         currentPosi = map.getCenter();
         currentZoom = map.getZoom();
         sessionStorage.setItem('currentLat',currentPosi.lat);
         sessionStorage.setItem('currentLng',currentPosi.lng);
         sessionStorage.setItem('currentZoom',currentZoom);
-    });
+    }, 500));
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
@@ -44,13 +44,40 @@ module.exports = {
     });
     const geojson = {
         "type": "FeatureCollection",
-        "name": "sendai_library",
         "features": [],
     }
+    const geoJsonLayer = L.geoJson(geojson,
+        {
+            pointToLayer: function (feature, latlng) {
+                // typeが図書館の場合は図書館のアイコンを表示する
+                if(feature.properties.type == 'library'){
+                    return L.marker(latlng, {icon: libraryIcon})
+                }
+                // 図書館以外の場合はカフェのアイコンを表示する
+                // TODO: 公民館が増えた場合は判定を追加する
+                else{
+                    return L.marker(latlng, {icon: cafeIcon})
+                }
+            },
+            onEachFeature: function(feature,layer){
+                // Leafletのpopupからrouter-linkを表示することができない
+                // そのため、Vueオブジェクトを作ってpopupに渡す
+                let name = feature.properties.name;
+                let PopupCont = Vue.extend({
+                    router,
+                    template: `<router-link to="/detail/${feature.id}" title="詳細">${name}</router-link>`
+                })
+                let popup = new PopupCont()
+                layer.bindPopup(popup.$mount().$el)
+            }
+        }
+    );
+    geoJsonLayer.addTo(map);
+
     // retrieve features from firestore
     const db = firebase.firestore();
     const features = await db.collection('feature').get();
-    geojson.features.push(...features.docs.map(doc => {
+    features.docs.map(doc => {
         const data = doc.data();
         return data.geometry
         ? {  // from geopoint
@@ -70,7 +97,8 @@ module.exports = {
             },
         }
         : Object.assign({id: doc.id}, JSON.parse(data.geojson || "{}"));  // from geojson
-    }));
+    })
+    .map(data => geoJsonLayer.addData(data));
 
     // retrieve features from spreadsheet
     if (false) try {
@@ -101,32 +129,6 @@ module.exports = {
         // do nothing...
     }
 
-    L.geoJson(geojson,
-        {
-            pointToLayer: function (feature, latlng) {
-                // typeが図書館の場合は図書館のアイコンを表示する
-                if(feature.properties.type == 'library'){
-                    return L.marker(latlng, {icon: libraryIcon})
-                }
-                // 図書館以外の場合はカフェのアイコンを表示する
-                // TODO: 公民館が増えた場合は判定を追加する
-                else{
-                    return L.marker(latlng, {icon: cafeIcon})
-                }
-            },
-            onEachFeature: function(feature,layer){
-                // Leafletのpopupからrouter-linkを表示することができない
-                // そのため、Vueオブジェクトを作ってpopupに渡す
-                let name = feature.properties.name;
-                let PopupCont = Vue.extend({
-                    router,
-                    template: `<router-link to="/detail/${feature.id}" title="詳細">${name}</router-link>`
-                })
-                let popup = new PopupCont()
-                layer.bindPopup(popup.$mount().$el)
-            }
-        }
-    ).addTo(map);
   }
 }
 </script>
