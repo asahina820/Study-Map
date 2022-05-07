@@ -72,7 +72,8 @@ module.exports = {
       this.type = data.type;
       // コメントを取り出す
       const reviewsFromDoc = await docRef.collection('reviews').get();
-      this.reviews = reviewsFromDoc.docs.map(doc => doc.data());
+      this.reviews = reviewsFromDoc.docs.map(doc => doc.data())
+      .sort((a,b) => (a.timestamp - b.timestamp))
   },
   methods: {
       aaa: async function() {
