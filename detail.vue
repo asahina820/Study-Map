@@ -9,7 +9,8 @@
                 </div>
                 <div class="meta">
                     <span class="category" v-if="type == 'library'">図書館</span>
-                    <span class="category" v-else>カフェ</span>
+                    <span class="category" v-else-if="type == 'cafe'">カフェ</span>
+                    <span class="category" v-else>公民館</span>
                     <div class="description" id="detail-description"><span v-html="description"></span></div>
                 </div>
             </div>
