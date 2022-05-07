@@ -56,6 +56,12 @@ module.exports = {
                 iconAnchor: [25, 50],
                 popupAnchor: [0, -50],
             });
+            var communityCentreIcon = L.icon({
+                iconUrl: './img/community_centre.png',
+                iconSize: [40, 40],
+                iconAnchor: [25, 50],
+                popupAnchor: [0, -50],
+            });
 
             const geojson = {
                 "type": "FeatureCollection",
@@ -68,10 +74,13 @@ module.exports = {
                         if(feature.properties.type == 'library'){
                             return L.marker(latlng, {icon: libraryIcon})
                         }
-                        // 図書館以外の場合はカフェのアイコンを表示する
-                        // TODO: 公民館が増えた場合は判定を追加する
-                        else{
+                        // typeがカフェの場合はカフェのアイコンを表示する
+                        else if(feature.properties.type == 'cafe'){
                             return L.marker(latlng, {icon: cafeIcon})
+                        }
+                        // 図書館、カフェ以外の場合は公民館のアイコンを表示する
+                        else{
+                            return L.marker(latlng, {icon: communityCentreIcon})
                         }
                     },
                     onEachFeature: function(feature,layer){
