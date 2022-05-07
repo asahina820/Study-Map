@@ -60,7 +60,7 @@ const app = new Vue({
     });
     // 初回アクセス時の場合はチュートリアルを表示する
     if (document.cookie.indexOf('visited=yes') === -1) {
-      document.cookie = 'visited=yes path=/';
+      document.cookie = 'visited=yes; max-age=31536000;';
       this.startTutorial();
     } 
   },
