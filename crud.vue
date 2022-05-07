@@ -1,5 +1,24 @@
 <template>
     <div>
+        <p>
+            <h3>【注意】</h3>
+            <ol>
+                <li>左端のID列を修正してSaveすると新規地物として登録されます。<br/>
+                    既存のレビューとの関連は切れます。<br/>
+                    既存の地物を編集する場合は、左端のID列は編集しないでください。<br/>
+                    座標が同一の地物が複数あるときの動作は未確認です。</li>
+                <li>ID列以外を編集してsaveすると、行単位で既存地物データを上書きします。<br/>
+                    (geohash文字列はlngとlatから算出しますので入力不要です)</li>
+                <li>typeは現時点では 「<span class="tt">library</span>と <span class="tt">community_centre</span> と それ以外」で3種類のアイコンを出し分けています。<br/>
+                    アイコンは3種類しか用意していません。新しいtypeを定義するときはロジックの修正とアイコンの追加が必要になります。</li>
+                <li>ページ先頭の「ファイルを選択」でgeojsonファイルを読み込みます。そのあと行単位のSaveボタンで追加できます。
+                    サンプルは<a href="https://github.com/hinamei/Study-Map/tree/vue/geojson">ここ</a>にあります。<br/>
+                    nameやdescription など、現時点では cafe_in_tohoku.geojson に記載されている属性を解釈するように実装してありますが、別のproperties を割り当てたい場合は実装の修正が必要ですので登録したいgeojsonファイルをお知らせください。
+                </li>
+                <li>地物の削除はこのページからはできません。詳細な編集(削除含む)は
+                    <a href="https://console.firebase.google.com/project/slog-map/firestore/data/~2Ffeature~2F0mXRxazaKAnDxBCFP9mz">Firestore管理ページ</a>から行えます(管理アカウントでのログインが必要です)。</li>
+            </ol>
+        </p>
         <input type=file @change="upload">
         <table>
             <thead>
@@ -112,5 +131,9 @@ tr.edited td {
     border-style: solid;
     border-width: thin;
     border-color: red;
+}
+
+.tt {
+    font-family: monospace;
 }
 </style>
