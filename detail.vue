@@ -44,7 +44,7 @@
                         <input type="text" required>
                     </div>
                 </form>
-                <button class="ui button" type="submit"  @click="aaa">Submit</button>
+                <button class="ui button" type="submit"  @click="aaa">送信</button>
             </div>
         </div>
     </div>
