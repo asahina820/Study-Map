@@ -8,6 +8,8 @@ module.exports = {
     async mounted() {
         // 背景地図表示
         let map = L.map("map");
+        console.log(this.$route.params);
+        console.log(this.$route);
 
         map.setView([
             Number(sessionStorage.currentLat || 38.26889),  // 緯度
