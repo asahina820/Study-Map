@@ -40,7 +40,7 @@ body::-webkit-scrollbar{
 }
 /* 自習スペース一覧 */
 #list-card{
-    width: 90%; 
+    width: 90%;
     margin-top: 50px; 
     margin-left: auto; 
     margin-right: auto;
@@ -48,23 +48,40 @@ body::-webkit-scrollbar{
 /* 自習スペース詳細 */
 #detail-cards{
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
-#info-card{
+#info-card, #posted-card{
     width: 40%;
+    height: 90%;
     margin: 50px 0 0 0;
 }
-
+#tag-area{
+    height: 15%;
+}
 #review-list-area{
+    height: 65%;
+    overflow-y: auto;
+}
+#review-post-area{
+    height: 20%
+}
+#review-list-area{
+    height: 65%;
     overflow-y: auto;
 }
 /* /コンテンツ */
 
+/* 縦向きの場合のスタイル */
  @media screen and (orientation: portrait) {
-    /* 縦向きの場合のスタイル */
     #info-card{
         width: 80%;
+        height: auto;
+    }
+    #posted-card{
+        width: 80%;
+        height: 50%;
     }
  }

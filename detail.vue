@@ -11,8 +11,8 @@
                 </div>
             </div>
         </div>
-        <div class="ui centered card" id="info-card">
-            <div class="extra content">
+        <div class="ui centered card" id="posted-card">
+            <div class="extra content" id="tag-area">
                 <p>タグ</p>
                 <div class="ui tag labels">
                     <a class="ui label">静かめ</a>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="extra content">
+            <div class="extra content" id="review-post-area">
                 <p>口コミ投稿</p>
                 <form class="ui form">
                     <div class="field">
