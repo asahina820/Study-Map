@@ -7,11 +7,11 @@
                 <div class="meta">
                     <span class="category" v-if="type == 'library'">図書館</span>
                     <span class="category" v-else>カフェ</span>
-                    <div class="description"><span v-html="description"></span></div>
+                    <div class="description" id="detail-description"><span v-html="description"></span></div>
                 </div>
             </div>
         </div>
-        <div class="ui centered card" id="info-card">
+        <div class="ui centered card" id="posted-card">
             <div class="extra content" id="tag-area">
                 <p>タグ</p>
                 <div class="ui tag labels">
@@ -44,7 +44,7 @@
                         <input type="text" required>
                     </div>
                 </form>
-                <button class="ui button" type="submit"  @click="aaa">Submit</button>
+                <button class="ui button" type="submit"  @click="aaa">送信</button>
             </div>
         </div>
     </div>

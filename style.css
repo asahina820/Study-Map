@@ -40,8 +40,8 @@ body::-webkit-scrollbar{
 }
 /* 自習スペース一覧 */
 #list-card{
-    width:80%; 
-    margin-top:50px; 
+    width: 90%;
+    margin-top: 50px; 
     margin-left: auto; 
     margin-right: auto;
 }
@@ -51,13 +51,12 @@ body::-webkit-scrollbar{
     height: 100%;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
-#info-card{
+#info-card, #posted-card{
     width: 40%;
     height: 90%;
-    margin-top:50px;
-    margin-right: 0;
-    margin-left: 0;
+    margin: 50px 0 0 0;
 }
 #tag-area{
     height: 15%;
@@ -69,4 +68,20 @@ body::-webkit-scrollbar{
 #review-post-area{
     height: 20%
 }
+#review-list-area{
+    height: 65%;
+    overflow-y: auto;
+}
 /* /コンテンツ */
+
+/* 縦向きの場合のスタイル */
+ @media screen and (orientation: portrait) {
+    #info-card{
+        width: 80%;
+        height: auto;
+    }
+    #posted-card{
+        width: 80%;
+        height: 50%;
+    }
+ }
