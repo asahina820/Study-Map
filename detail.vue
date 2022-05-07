@@ -98,9 +98,7 @@ module.exports = {
             document.querySelector('form.ui input').value = '';
         },
         setLocation: function () {
-            sessionStorage.setItem('currentLat', this.location.latitude);
-            sessionStorage.setItem('currentLng', this.location.longitude);
-            this.$router.push('/')
+            this.$router.push(`/@${this.location.latitude},${this.location.longitude}`);
         }
     }
 }

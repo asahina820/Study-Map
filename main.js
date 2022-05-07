@@ -14,10 +14,9 @@ const router = new VueRouter({
     { path: '/list', component: httpVueLoader('./list.vue') },
     { path: '/detail/:id', component: httpVueLoader('./detail.vue') },
     { path: '/login', component: httpVueLoader('./login.vue') },
-    { path: '/', component: map_vue },
-    { path: '/@:lat,:lng', component: map_vue },
-    { path: '/@:lat,:lng,:zoom', component: map_vue },
     { path: '/crud', component: httpVueLoader('./crud.vue') },  // hidden page
+    { path: '/', component: map_vue },
+    { path: '/:latlng', component: map_vue },  // must be a last item
   ]
 })
 

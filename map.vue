@@ -8,19 +8,24 @@ module.exports = {
     async mounted() {
         // 背景地図表示
         let map = L.map("map");
-        console.log(this.$route.params);
-        console.log(this.$route);
 
+        // 以下の優先度順に地図の中心を設定する:
+        // 1. URLパラメータから。 形式 ... http://host:port/#/@38.26889,140.87194,16z
+        // 2. セッションストレージから。
+        // 3. 初期値 ... 38.26889, 140.87194, 16
+        const latlng = this.$route.params.latlng;
+        params = /^@(?<lat>[.\d]+),(?<lng>[.\d]+)(?:,(?<zoom>\d+)z)?$/.exec(latlng)?.groups;
         map.setView([
-            Number(sessionStorage.currentLat || 38.26889),  // 緯度
-            Number(sessionStorage.currentLng || 140.87194), // 経度
+            sessionStorage.currentLat = params?.lat || sessionStorage.currentLat || 38.26889,  // 緯度
+            sessionStorage.currentLng = params?.lng || sessionStorage.currentLng || 140.87194,  // 経度
         ],
-            Number(sessionStorage.currentZoom || 16),  // ズームレベル
+        sessionStorage.currentZoom = params?.zoom || sessionStorage.currentZoom || 16,
         );
 
         map.on('move', _.debounce(async (e) => {
             currentPosi = map.getCenter();
             currentZoom = map.getZoom();
+            window.location.hash = `#/@${currentPosi.lat},${currentPosi.lng},${currentZoom}z`;
             sessionStorage.setItem('currentLat', currentPosi.lat);
             sessionStorage.setItem('currentLng', currentPosi.lng);
             sessionStorage.setItem('currentZoom', currentZoom);
