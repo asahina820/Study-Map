@@ -53,17 +53,18 @@ body::-webkit-scrollbar{
     flex-wrap: wrap;
 }
 #info-card{
-    width: auto;
+    width: 40%;
     margin: 50px 0 0 0;
 }
-#tag-area{
-    height: 15%;
-}
+
 #review-list-area{
-    height: 65%;
     overflow-y: auto;
 }
-#review-post-area{
-    height: 20%
-}
 /* /コンテンツ */
+
+ @media screen and (orientation: portrait) {
+    /* 縦向きの場合のスタイル */
+    #info-card{
+        width: 80%;
+    }
+ }

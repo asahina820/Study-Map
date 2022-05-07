@@ -7,12 +7,12 @@
                 <div class="meta">
                     <span class="category" v-if="type == 'library'">図書館</span>
                     <span class="category" v-else>カフェ</span>
-                    <div class="description"><span v-html="description"></span></div>
+                    <div class="description" id="detail-description"><span v-html="description"></span></div>
                 </div>
             </div>
         </div>
         <div class="ui centered card" id="info-card">
-            <div class="extra content" id="tag-area">
+            <div class="extra content">
                 <p>タグ</p>
                 <div class="ui tag labels">
                     <a class="ui label">静かめ</a>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="extra content" id="review-post-area">
+            <div class="extra content">
                 <p>口コミ投稿</p>
                 <form class="ui form">
                     <div class="field">
