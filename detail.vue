@@ -3,7 +3,10 @@
         <div class="ui centered card" id="info-card">
             <img v-bind:src="imgSrc">
             <div class="content">
-                <p class="header">{{ name }}</p>
+                <div class="header">
+                    {{ name }}
+                    <button class="ui icon button" @click="setLocation" title="地図に移動"><i class="map marker alternate icon"></i></button>
+                </div>
                 <div class="meta">
                     <span class="category" v-if="type == 'library'">図書館</span>
                     <span class="category" v-else>カフェ</span>
@@ -59,6 +62,7 @@ module.exports = {
       imgSrc: '',
       type: '',
       reviews: [],
+      location: [],
     }
   },
   mounted: async function() {
@@ -70,6 +74,7 @@ module.exports = {
       this.description = data.description;
       this.imgSrc = data.imgSrc;
       this.type = data.type;
+      this.location = data.geometry;
       // コメントを取り出す
       const reviewsFromDoc = await docRef.collection('reviews').get();
       this.reviews = reviewsFromDoc.docs.map(doc => doc.data())
@@ -89,6 +94,11 @@ module.exports = {
         await reviews.add(review);
         this.reviews.push(review);
         document.querySelector('form.ui input').value = '';
+      },
+      setLocation: function() {
+        sessionStorage.setItem('currentLat',this.location.latitude);
+        sessionStorage.setItem('currentLng',this.location.longitude);
+        this.$router.push('/')
     }
   }
 }
