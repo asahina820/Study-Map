@@ -29,7 +29,7 @@
             <div class="extra content" id="review-list-area">
                 <p>口コミ一覧</p>
                 <p class="description" v-if="reviews.length == 0">口コミはまだありません。</p>
-                <div v-for="review in reviews" :key="review.comment" class="ui tag labels">
+                <div v-for="(review,index) in reviews" :key="index" class="ui tag labels">
                     <div class="ui relaxed divided list">
                         <div class="item">
                             <i class="large user middle aligned icon"></i>
