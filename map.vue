@@ -10,7 +10,7 @@ module.exports = {
         let map = L.map("map");
 
         map.setView([
-            Number(sessionStorage.currentLat ||  38.26889),  // 緯度
+            Number(sessionStorage.currentLat || 38.26889),  // 緯度
             Number(sessionStorage.currentLng || 140.87194), // 経度
         ],
             Number(sessionStorage.currentZoom || 16),  // ズームレベル
@@ -19,9 +19,9 @@ module.exports = {
         map.on('move', _.debounce(async (e) => {
             currentPosi = map.getCenter();
             currentZoom = map.getZoom();
-            sessionStorage.setItem('currentLat',currentPosi.lat);
-            sessionStorage.setItem('currentLng',currentPosi.lng);
-            sessionStorage.setItem('currentZoom',currentZoom);
+            sessionStorage.setItem('currentLat', currentPosi.lat);
+            sessionStorage.setItem('currentLng', currentPosi.lng);
+            sessionStorage.setItem('currentZoom', currentZoom);
             // retrieve features for new boundaries
             if (false) {
                 // データ量が増えてきたら有効化する
@@ -35,7 +35,7 @@ module.exports = {
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
-                attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }
         ).addTo(map);
         var geoJsonLayer = await this.getFeaturesLayer();
@@ -71,19 +71,19 @@ module.exports = {
                 {
                     pointToLayer: function (feature, latlng) {
                         // typeが図書館の場合は図書館のアイコンを表示する
-                        if(feature.properties.type == 'library'){
-                            return L.marker(latlng, {icon: libraryIcon})
+                        if (feature.properties.type == 'library') {
+                            return L.marker(latlng, { icon: libraryIcon })
                         }
                         // typeがカフェの場合はカフェのアイコンを表示する
-                        else if(feature.properties.type == 'cafe'){
-                            return L.marker(latlng, {icon: cafeIcon})
+                        else if (feature.properties.type == 'cafe') {
+                            return L.marker(latlng, { icon: cafeIcon })
                         }
                         // 図書館、カフェ以外の場合は公民館のアイコンを表示する
-                        else{
-                            return L.marker(latlng, {icon: communityCentreIcon})
+                        else {
+                            return L.marker(latlng, { icon: communityCentreIcon })
                         }
                     },
-                    onEachFeature: function(feature,layer){
+                    onEachFeature: function (feature, layer) {
                         // Leafletのpopupからrouter-linkを表示することができない
                         // そのため、Vueオブジェクトを作ってpopupに渡す
                         let name = feature.properties.name;
@@ -111,8 +111,8 @@ module.exports = {
             // retrieve features from firestore
             const db = firebase.firestore();
             const features = await db.collection('feature')
-                .where('geohash','>=', bboxes[0])
-                .where('geohash','<', bboxes[bboxes.length-1])
+                .where('geohash', '>=', bboxes[0])
+                .where('geohash', '<', bboxes[bboxes.length - 1])
                 .get();
             features.docs.map(doc => {
                 const data = doc.data();
@@ -133,7 +133,7 @@ module.exports = {
                             type: data.type,
                         },
                     }
-                    : Object.assign({id: doc.id}, JSON.parse(data.geojson || "{}"));  // from geojson
+                    : Object.assign({ id: doc.id }, JSON.parse(data.geojson || "{}"));  // from geojson
             })
                 .map(data => geoJsonLayer.addData(data));
 

@@ -29,12 +29,12 @@ const anonymous = {
 const app = new Vue({
   el: "#app",
   router,
-  data: function() { 
+  data: function () {
     return {
       user: anonymous,
     }
   },
-  mounted: function() {
+  mounted: function () {
     // Initialize Firebase
     this.firebase = firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
@@ -50,30 +50,30 @@ const app = new Vue({
     if (document.cookie.indexOf('visited=yes') === -1) {
       document.cookie = 'visited=yes; max-age=31536000;';
       this.startTutorial();
-    } 
+    }
   },
   methods: {
-    startTutorial: function(){
+    startTutorial: function () {
       introJs().setOptions({
         showBullets: false,
         showProgress: true,
         steps: [{
-            title: 'ようこそ👋',
-            intro: 'Sログは、学生のための自習スペース共有サイトです。'
+          title: 'ようこそ👋',
+          intro: 'Sログは、学生のための自習スペース共有サイトです。'
         },
         {
-            title: '自習スペース詳細',
-            element: document.querySelector('#content-area'),
-            intro: '地図上のアイコンをクリックすると、<br>自習スペースの名前が表示されます。<br>リンクをクリックすると、自習スペースの詳細を見ることができます。'
+          title: '自習スペース詳細',
+          element: document.querySelector('#content-area'),
+          intro: '地図上のアイコンをクリックすると、<br>自習スペースの名前が表示されます。<br>リンクをクリックすると、自習スペースの詳細を見ることができます。'
         },
         {
-            element: document.querySelector('#content-area'),
-            intro: '自習スペース詳細画面では、口コミを投稿できます。'
+          element: document.querySelector('#content-area'),
+          intro: '自習スペース詳細画面では、口コミを投稿できます。'
         },
         {
-            title: '自習スペース一覧',
-            element: document.querySelector('#list-btn'),
-            intro: '自習スペースの一覧を見ることができます。'
+          title: '自習スペース一覧',
+          element: document.querySelector('#list-btn'),
+          intro: '自習スペースの一覧を見ることができます。'
         },
         {
           title: 'ログイン',
@@ -81,7 +81,7 @@ const app = new Vue({
           intro: 'ソーシャルアカウントでログインできます。'
         },
         {
-            intro: 'Good Luck!'
+          intro: 'Good Luck!'
         }]
       }).start();
     }

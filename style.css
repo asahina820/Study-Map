@@ -1,14 +1,17 @@
-body,#app {
+body,
+#app {
     width: 100%;
     height: 100%;
     margin: 0px;
     padding: 0px;
     -webkit-print-color-adjust: exact;
 }
+
 /* Intro.jsでスクロールバーが表示されるとハイライトがずれるため、スクロールバーを非表示にする */
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
     display: none;
-  }
+}
+
 /* ヘッダー */
 #header {
     height: 7%;
@@ -16,72 +19,87 @@ body::-webkit-scrollbar{
     display: flex;
     align-items: center;
 }
+
 /* タイトル */
-#header-title{
+#header-title {
     padding-left: 50px;
 }
-#title{
+
+#title {
     color: #fff;
     font-family: 'M PLUS 1p', sans-serif;
     letter-spacing: 3px;
 }
+
 /* ボタン */
-#list-button{
+#list-button {
     margin-left: auto;
     padding-right: 30px;
 }
-.list-title{
+
+.list-title {
     font-family: 'M PLUS 1p', sans-serif;
 }
+
 /* /ヘッダー */
 /* コンテンツ */
 #content-area {
     height: 93%;
 }
+
 /* 自習スペース一覧 */
-#list-card{
+#list-card {
     width: 90%;
-    margin-top: 50px; 
-    margin-left: auto; 
+    margin-top: 50px;
+    margin-left: auto;
     margin-right: auto;
 }
+
 /* 自習スペース詳細 */
-#detail-cards{
+#detail-cards {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
-#info-card, #posted-card{
+
+#info-card,
+#posted-card {
     width: 40%;
     height: 90%;
     margin: 50px 0 0 0;
 }
-#tag-area{
+
+#tag-area {
     height: 15%;
 }
-#review-list-area{
+
+#review-list-area {
     height: 65%;
     overflow-y: auto;
 }
-#review-post-area{
+
+#review-post-area {
     height: 20%
 }
-#review-list-area{
+
+#review-list-area {
     height: 65%;
     overflow-y: auto;
 }
+
 /* /コンテンツ */
 
 /* 縦向きの場合のスタイル */
- @media screen and (orientation: portrait) {
-    #info-card{
+@media screen and (orientation: portrait) {
+    #info-card {
         width: 80%;
         height: auto;
     }
-    #posted-card{
+
+    #posted-card {
         width: 80%;
         height: 50%;
     }
- }
+}
