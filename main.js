@@ -7,14 +7,6 @@ const firebaseConfig = {
   appId: "1:196564306097:web:8929c883ac4cf775997a90",
 };
 
-// https://github.com/google/google-api-javascript-client/blob/master/docs/start.md
-const gapiConfig = {
-  apiKey: 'AIzaSyBYBitUyYjOT1XipnK4npRMrJAqyRtaBNc',
-  'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest'],
-  'clientId': '196564306097-h9rorlcsbdefol2f6ccr3bihkmcma1pu.apps.googleusercontent.com',
-  'scope': 'profile',
-}
-
 const router = new VueRouter({
   routes: [
     { path: '/', component: httpVueLoader('./map.vue') },
@@ -53,10 +45,6 @@ const app = new Vue({
       } else {
         this.user = anonymous
       }
-    });
-    gapi.load('client', async () => {
-      await gapi.client.init(gapiConfig);
-      console.debug("Now you can use gapi.client.sheets API!");
     });
     // 初回アクセス時の場合はチュートリアルを表示する
     if (document.cookie.indexOf('visited=yes') === -1) {
