@@ -100,8 +100,6 @@ module.exports = {
             const file = event.srcElement.files[0];
             const content = await file.text();
             const featurecollection = JSON.parse(content);
-            console.log(featurecollection);
-            // console.dir(geojson.features);
             const features = featurecollection.features
             .map(geojson => {
                 return {

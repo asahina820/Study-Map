@@ -106,8 +106,6 @@ module.exports = {
                     bboxes = geohash.bboxes(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast(), precision);
                     if (bboxes.length > 8) break;
                 }
-                console.log(map.getZoom())
-                console.log(bboxes);
             }
 
             // retrieve features from firestore
@@ -116,7 +114,6 @@ module.exports = {
                 .where('geohash','>=', bboxes[0])
                 .where('geohash','<', bboxes[bboxes.length-1])
                 .get();
-            console.log("Feature Qty: ", features.docs.length)
             features.docs.map(doc => {
                 const data = doc.data();
                 return data.geometry

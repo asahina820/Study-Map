@@ -30,15 +30,7 @@ module.exports = {
     },
     mounted() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                console.log("User logged in");
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
-                this.user = user;
-            } else {
-                console.log("User logged out");
-                this.user = null;
-            }
+            this.user = user ? user : null;
         });
     },
     updated() {
