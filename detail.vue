@@ -48,7 +48,7 @@
                         <input type="text" required>
                     </div>
                 </form>
-                <button class="ui button" type="submit"  @click="aaa">送信</button>
+                <button class="ui button" type="submit"  @click="sendReview">送信</button>
             </div>
         </div>
     </div>
@@ -82,7 +82,7 @@ module.exports = {
       .sort((a,b) => (a.timestamp - b.timestamp))
   },
   methods: {
-      aaa: async function() {
+      sendReview: async function() {
         const db = firebase.firestore();
         const comment = document.querySelector('form.ui input').value;
         const documentId = this.$route.params.id;
