@@ -15,8 +15,7 @@ const router = new VueRouter({
     { path: '/detail/:id', component: httpVueLoader('./detail.vue') },
     { path: '/login', component: httpVueLoader('./login.vue') },
     { path: '/crud', component: httpVueLoader('./crud.vue') },  // hidden page
-    { path: '/', component: map_vue },
-    { path: '/:latlng', component: map_vue },  // must be a last item
+    { path: '/:latlng?', component: map_vue },  // optional parameters, must be a last item
   ]
 })
 
