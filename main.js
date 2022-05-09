@@ -7,15 +7,13 @@ const firebaseConfig = {
   appId: "1:196564306097:web:8929c883ac4cf775997a90",
 };
 
-map_vue = httpVueLoader('./map.vue');
-
 const router = new VueRouter({
   routes: [
     { path: '/list', component: httpVueLoader('./list.vue') },
     { path: '/detail/:id', component: httpVueLoader('./detail.vue') },
     { path: '/login', component: httpVueLoader('./login.vue') },
     { path: '/crud', component: httpVueLoader('./crud.vue') },  // hidden page
-    { path: '/:latlng?', component: map_vue },  // optional parameters, must be a last item
+    { path: '/:latlng?', component: httpVueLoader('./map.vue') },  // optional parameters, must be a last item
   ]
 })
 
