@@ -5,7 +5,8 @@
         <img v-bind:src="featureItem.imgSrc">
       </div>
       <div class="content">
-        <router-link tag="a" v-bind:to="'/detail/'+featureItem.documentId" title="詳細" class="header">{{ featureItem.name }}</router-link>
+        <router-link v-bind:to="'/detail/' + featureItem.documentId" title="詳細" class="header">{{ featureItem.name }}
+        </router-link>
       </div>
       <div class="extra">
         <span class="category" v-if="featureItem.type == 'library'">図書館</span>
@@ -18,12 +19,12 @@
 
 <script>
 module.exports = {
-  data: function() {
+  data: function () {
     return {
       featureItems: [],
     }
   },
-  mounted: async function() {
+  mounted: async function () {
     const db = firebase.firestore();
     const itemListFromDoc = await db.collection('feature').get();
     // 地物情報（GeoJSON形式）とドキュメントIDを全て取り出す

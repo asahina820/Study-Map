@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    <!-- Google API -->
-    <script src="https://apis.google.com/js/api.js"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,26 +31,27 @@
     <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
     <link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet" type="text/css">
     <!-- lodash (for debounce) -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script></head>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <!-- ngeohash -->
+    <script>var module = module || {}</script>
     <script src="https://cdn.jsdelivr.net/npm/ngeohash@0.6.3/main.js"></script>
 </head>
 <body>
     <div id="app">
         <div id="header">
             <div id="header-title">
-                <router-link tag="a" to="/">
+                <router-link to="/">
                     <h1 id="title">Sログ</h1>
                 </router-link>
             </div>
             <div id="list-button">
-                <router-link tag="button" class="ui pink button" to="/list" id="list-btn">
+                <router-link class="ui pink button" to="/list" id="list-btn">
                     <i class="th icon"></i><span class="list-title">自習スペース一覧</span>
                 </router-link>
-                <router-link v-if="user" tag="button" class="ui pink button" to="/login" id="login-btn">
+                <router-link v-if="user" class="ui pink button" to="/login" id="login-btn">
                     <i class="user icon"></i><span class="list-title">{{user.displayName}}</span>
                 </router-link>
-                <router-link v-if="!user" tag="button" class="ui pink button" to="/login">
+                <router-link v-if="!user" class="ui pink button" to="/login">
                     <i class="sign-in icon"></i><span class="list-title">ログイン</span>
                 </router-link>
                 <button class="ui pink button" @click="startTutorial" >

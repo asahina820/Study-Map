@@ -6,13 +6,13 @@
                 <div class="item">
                     <img class="content" :src="user.photoURL" style="width:200px" />
                 </div>
-                <div class="item">Display Name: 
+                <div class="item">Display Name:
                     <div class="content">{{ user.displayName || "void" }} </div>
                 </div>
-                <div class="item">email: 
+                <div class="item">email:
                     <div class="content">{{ user.email || "void" }} </div>
                 </div>
-                <div class="item">emailVerified: 
+                <div class="item">emailVerified:
                     <div class="content">{{ user.emailVerified || "void" }} </div>
                 </div>
             </div>
@@ -30,15 +30,7 @@ module.exports = {
     },
     mounted() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                console.log("User logged in");
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
-                this.user = user;
-            } else {
-                console.log("User logged out");
-                this.user = null;
-            }
+            this.user = user ? user : null;
         });
     },
     updated() {

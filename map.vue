@@ -10,7 +10,7 @@ module.exports = {
         let map = L.map("map");
 
         map.setView([
-            Number(sessionStorage.currentLat ||  38.26889),  // 緯度
+            Number(sessionStorage.currentLat || 38.26889),  // 緯度
             Number(sessionStorage.currentLng || 140.87194), // 経度
         ],
             Number(sessionStorage.currentZoom || 16),  // ズームレベル
@@ -19,9 +19,9 @@ module.exports = {
         map.on('move', _.debounce(async (e) => {
             currentPosi = map.getCenter();
             currentZoom = map.getZoom();
-            sessionStorage.setItem('currentLat',currentPosi.lat);
-            sessionStorage.setItem('currentLng',currentPosi.lng);
-            sessionStorage.setItem('currentZoom',currentZoom);
+            sessionStorage.setItem('currentLat', currentPosi.lat);
+            sessionStorage.setItem('currentLng', currentPosi.lng);
+            sessionStorage.setItem('currentZoom', currentZoom);
             // retrieve features for new boundaries
             if (false) {
                 // データ量が増えてきたら有効化する
@@ -35,7 +35,7 @@ module.exports = {
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
-                attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }
         ).addTo(map);
         var geoJsonLayer = await this.getFeaturesLayer();
@@ -71,19 +71,19 @@ module.exports = {
                 {
                     pointToLayer: function (feature, latlng) {
                         // typeが図書館の場合は図書館のアイコンを表示する
-                        if(feature.properties.type == 'library'){
-                            return L.marker(latlng, {icon: libraryIcon})
+                        if (feature.properties.type == 'library') {
+                            return L.marker(latlng, { icon: libraryIcon })
                         }
                         // typeがカフェの場合はカフェのアイコンを表示する
-                        else if(feature.properties.type == 'cafe'){
-                            return L.marker(latlng, {icon: cafeIcon})
+                        else if (feature.properties.type == 'cafe') {
+                            return L.marker(latlng, { icon: cafeIcon })
                         }
                         // 図書館、カフェ以外の場合は公民館のアイコンを表示する
-                        else{
-                            return L.marker(latlng, {icon: communityCentreIcon})
+                        else {
+                            return L.marker(latlng, { icon: communityCentreIcon })
                         }
                     },
-                    onEachFeature: function(feature,layer){
+                    onEachFeature: function (feature, layer) {
                         // Leafletのpopupからrouter-linkを表示することができない
                         // そのため、Vueオブジェクトを作ってpopupに渡す
                         let name = feature.properties.name;
@@ -106,17 +106,14 @@ module.exports = {
                     bboxes = geohash.bboxes(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast(), precision);
                     if (bboxes.length > 8) break;
                 }
-                console.log(map.getZoom())
-                console.log(bboxes);
             }
 
             // retrieve features from firestore
             const db = firebase.firestore();
             const features = await db.collection('feature')
-                .where('geohash','>=', bboxes[0])
-                .where('geohash','<', bboxes[bboxes.length-1])
+                .where('geohash', '>=', bboxes[0])
+                .where('geohash', '<', bboxes[bboxes.length - 1])
                 .get();
-            console.log("Feature Qty: ", features.docs.length)
             features.docs.map(doc => {
                 const data = doc.data();
                 return data.geometry
@@ -136,38 +133,10 @@ module.exports = {
                             type: data.type,
                         },
                     }
-                    : Object.assign({id: doc.id}, JSON.parse(data.geojson || "{}"));  // from geojson
+                    : Object.assign({ id: doc.id }, JSON.parse(data.geojson || "{}"));  // from geojson
             })
                 .map(data => geoJsonLayer.addData(data));
 
-            // retrieve features from spreadsheet
-            if (false) try {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                while(!gapi.client.sheets) {
-                    console.debug("waiting for that gapi.client.sheets api be available...")
-                    await new Promise(resolve => setTimeout(resolve, 50));
-                }
-
-                const response = await gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '1JWUkyuRUprYrODsa1Fr70VOIxleLNy5g3Xs-g7NymmI',
-                    range: 'amenity:library'
-                });
-                var features_json = response.result?.values?.slice(2)?.map(feature => {
-                    const [id, lat, lng, type, name, description, imgSrc] = feature;
-                    return {
-                        type: "Feature",
-                        id,
-                        properties: { "名称": name, type, name, description, imgSrc },
-                        geometry: {
-                            type: "Point",
-                            coordinates: [ lat, lng ]
-                        }
-                    };
-                }) || [];
-                geojson.features.push(...features_json);
-            } catch (error) {
-                // do nothing...
-            }
             return geoJsonLayer;
         },
     }
