@@ -14,7 +14,7 @@ module.exports = {
         // 2. セッションストレージから。
         // 3. 初期値 ... 38.26889, 140.87194, 16
         const latlng = this.$route.params.latlng;
-        params = /^@(?<lat>[.\d]+),(?<lng>[.\d]+)(?:,(?<zoom>\d+)z)?$/.exec(latlng)?.groups;
+        params = /^@(?<lat>-?[.\d]+),(?<lng>-?[.\d]+)(?:,(?<zoom>\d+)z)?$/.exec(latlng)?.groups;
         map.setView([
             sessionStorage.currentLat = params?.lat || sessionStorage.currentLat || 38.26889,  // 緯度
             sessionStorage.currentLng = params?.lng || sessionStorage.currentLng || 140.87194,  // 経度
